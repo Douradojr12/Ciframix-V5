@@ -1,0 +1,66 @@
+CIFRAMIX - Pot-pourri de cifras com transposição e rolagem automática
+=====================================================================
+
+COMO ABRIR NO WINDOWS (sem VS Code)
+-----------------------------------
+1. Extraia o ZIP em uma pasta (por exemplo, Documentos\CifraMix). Não abra de dentro do ZIP.
+2. Opção simples: dê dois cliques em index.html (abre no navegador padrão; prefira Chrome ou Edge).
+   Tudo funciona, exceto a instalação como aplicativo.
+3. Opção com instalação (PWA): dê dois cliques em Iniciar-CifraMix.bat. Ele abre o app em
+   http://localhost:8080 e deixa uma janela preta aberta (não feche enquanto usar).
+   No Chrome/Edge aparece um ícone de instalar na barra de endereço. Depois de instalado,
+   o app abre como programa próprio e funciona sem internet.
+   (Esse .bat usa o PowerShell que já vem no Windows. Se o Windows pedir permissão, permita.)
+
+IMPORTANTE: os dados ficam guardados no navegador, separados por endereço. O que você salvar abrindo
+index.html direto NÃO aparece em http://localhost:8080, e vice-versa. Escolha um jeito e use sempre
+o mesmo; para mudar, use Exportar JSON / Importar JSON (veja Backup).
+
+COMO USAR NO CELULAR
+--------------------
+Opção A (mais simples, sem instalar): exporte seus repertórios no computador (Biblioteca -> Exportar JSON),
+envie o arquivo para o celular (Drive, WhatsApp, e-mail) e abra o app no celular importando o arquivo.
+Para o app em si funcionar no celular ele precisa estar em um endereço de internet:
+
+Opção B (recomendada): publique a pasta em uma hospedagem estática gratuita (Netlify, GitHub Pages,
+Cloudflare Pages ou similar). Você recebe um endereço https. Abra esse endereço no celular:
+- Android (Chrome): menu ⋮ -> "Instalar app" (ou "Adicionar à tela inicial").
+- iPhone (Safari): botão Compartilhar -> "Adicionar à Tela de Início".
+Depois da primeira abertura com internet, o app abre também offline.
+Seus dados continuam só no aparelho (a hospedagem guarda apenas os arquivos do app, não suas cifras).
+
+BACKUP DOS REPERTÓRIOS
+----------------------
+- Biblioteca -> Exportar JSON: baixa ciframix-backup-AAAA-MM-DD.json com todas as músicas e pot-pourris.
+- Biblioteca -> Importar JSON: restaura ou une com o que já existe (nada é sobrescrito).
+- Guarde o arquivo fora do navegador (Drive, e-mail, pen drive). A tela Biblioteca mostra a data do último backup.
+- Limpar dados do navegador ou desinstalar o app APAGA tudo que não foi exportado.
+
+COMO USAR
+---------
+1. Pesquisar: digite o nome da música ou do artista. O app mostra o que há na sua biblioteca e, com internet,
+   resultados de um catálogo online (iTunes Search API da Apple e MusicBrainz): título, artista, álbum, ano e capa.
+   - Clique em "Procurar cifra" (abre uma busca em outra aba), copie a cifra do site que você usa,
+     volte e clique em "Adicionar com cifra" -> "Colar da área de transferência" -> "Salvar na biblioteca".
+     O app limpa o texto colado (caracteres invisíveis, linhas em branco demais) e reconhece o tom (linha "Tom: G").
+   - Também dá para digitar ou importar um .txt em "Cadastrar música".
+   - O CifraMix NÃO baixa cifras sozinho: não existe API pública autorizada do Cifra Club nem de outro site de cifras.
+     Use cifras suas ou que você tenha permissão de usar.
+   - Privacidade: a busca online envia o texto digitado à Apple/MusicBrainz. Desmarque
+     "Pesquisar também no catálogo online" para usar só a biblioteca (a escolha fica salva).
+2. Biblioteca -> Novo pot-pourri: adicione músicas, reordene (arraste ⠿ ou use ▲▼), ajuste o tom e anote.
+3. Desenhos dos acordes (violão): aparecem em "Ver cifra" e em cada música do pot-pourri (botão Acordes liga/desliga).
+   Toque num acorde da cifra para ver o desenho; ↻ troca a posição. Violão/guitarra em afinação padrão.
+4. Tocar pot-pourri: todas as músicas em uma página. Iniciar rola sozinho; Modo palco para tocar ao vivo.
+Atalhos: Espaço pausa/continua | seta para cima/baixo velocidade | direita/esquerda troca de música | Esc sai do palco.
+
+ESTRUTURA DOS ARQUIVOS
+----------------------
+index.html, manifest.webmanifest, sw.js (offline), css/, js/ (storage, ui, source-adapter, search,
+catalog, chord-engine, transposer, fingerings, navigation, autoscroll, setlist, presentation, help, app), assets/icons/, tests/.
+Para adicionar uma fonte autorizada de cifras: crie uma classe que estenda SourceAdapter (js/source-adapter.js)
+e registre com CM.registerSource(). Se alterar qualquer arquivo do app, aumente VERSION em sw.js.
+
+TESTES (opcional, para desenvolvedores)
+---------------------------------------
+node tests/transposer.test.js  |  node tests/transposer2.test.js  |  node tests/harmony.test.js  |  node tests/catalog.test.js  |  node tests/fingerings.test.js  |  node tests/autoscroll.test.js  |  python3 tests/e2e.py  |  python3 tests/e2e_pwa.py  |  python3 tests/e2e_catalog.py  |  python3 tests/e2e_diagrams.py
